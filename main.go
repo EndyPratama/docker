@@ -13,5 +13,9 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
+	app.Get("/ping", func(c *fiber.Ctx) error {
+		return c.SendString("PONG!!!")
+	})
+
 	log.Fatal(app.Listen(":80"))
 }

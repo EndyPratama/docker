@@ -1,0 +1,41 @@
+# name: Build and Deploy to GCE
+
+# on:
+#   push:
+#     branches:
+#       - main  # Ganti dengan nama branch yang Anda inginkan
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Set up Docker Buildx
+#       uses: docker/setup-buildx-action@v2
+
+#     - name: Cache Docker layers
+#       uses: actions/cache@v2
+#       with:
+#         path: /tmp/.buildx-cache
+#         key: ${{ runner.os }}-buildx-${{ github.sha }}
+#         restore-keys: |
+#           ${{ runner.os }}-buildx-
+    
+#     - name: Login to Google Cloud
+#       uses: google-github-actions/auth@v0
+#       with:
+#         credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+#     - name: Build Docker image and push to Artifact Registry
+#       run: |
+#         docker build -t asia-southeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY_NAME }}/myapp:${{ github.sha }} .
+#         docker push asia-southeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY_NAME }}/myapp:${{ github.sha }}
+
+#     - name: Deploy to GCE
+#       run: |
+#         gcloud compute instances update-container ${{ secrets.GCE_INSTANCE_NAME }} \
+#           --container-image asia-southeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ secrets.REPOSITORY_NAME }}/myapp:${{ github.sha }} \
+#           --zone ${{ secrets.ZONE }}
